@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sonic Super Timeline</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero">
+        <nav class="topbar">
+          <div class="brand">
+            <img class="brand-logo" src="./sonic_logo.png" alt="Sonic the Hedgehog logo" />
+            <div>
+              <p class="eyebrow">Sonic Super Timeline</p>
+              <h1>Race Through Sonic History</h1>
+            </div>
+          </div>
+          <a class="hero-link" href="#timeline">Jump to the timeline</a>
+        </nav>
+
+        <div class="hero-grid">
+          <section class="hero-copy">
+            <p class="hero-kicker">Fast facts for young fans</p>
+            <h2>Every big Sonic adventure, from 1991 to today.</h2>
+            <p class="hero-text">
+              Sonic did not begin in the 1980s. The franchise officially burst
+              onto the scene on <strong>June 23, 1991</strong>, and this colorful
+              guide zooms through the movies, games, shows, comics, books,
+              web shorts, and fun side projects that followed.
+            </p>
+
+            <div class="hero-actions">
+              <a class="button primary" href="#controls">Start exploring</a>
+              <button class="button secondary" id="surpriseButton" type="button">
+                Spin Dash Surprise
+              </button>
+            </div>
+
+            <div class="hero-badges" id="heroBadges"></div>
+          </section>
+
+          <aside class="hero-art" aria-hidden="true">
+            <div class="sky-burst"></div>
+            <div class="big-ring">
+              <div class="ring-core">GO!</div>
+            </div>
+            <div class="speed-lines speed-lines-left"></div>
+            <div class="speed-lines speed-lines-right"></div>
+            <div class="pixel-hill hill-one"></div>
+            <div class="pixel-hill hill-two"></div>
+            <div class="hero-star star-one"></div>
+            <div class="hero-star star-two"></div>
+            <div class="hero-star star-three"></div>
+          </aside>
+        </div>
+      </header>
+
+      <main>
+        <section class="stats-strip" aria-label="Franchise totals">
+          <article class="stat-card">
+            <p class="stat-number" id="totalCount">0</p>
+            <p class="stat-label">Big Sonic projects</p>
+          </article>
+          <article class="stat-card">
+            <p class="stat-number" id="gameCount">0</p>
+            <p class="stat-label">Games and spin-offs</p>
+          </article>
+          <article class="stat-card">
+            <p class="stat-number" id="screenCount">0</p>
+            <p class="stat-label">Movies and shows</p>
+          </article>
+          <article class="stat-card">
+            <p class="stat-number" id="otherCount">0</p>
+            <p class="stat-label">Comics, books, shorts, and extras</p>
+          </article>
+        </section>
+
+        <section class="panel controls-panel" id="controls">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Pick your route</p>
+              <h3>Filter the franchise map</h3>
+            </div>
+            <p class="panel-note">
+              This timeline lists distinct Sonic projects and series. Tiny port
+              differences are grouped so the adventure stays easy to browse.
+            </p>
+          </div>
+
+          <div class="search-row">
+            <label class="search-box" for="searchInput">
+              <span>Search titles or notes</span>
+              <input
+                id="searchInput"
+                type="search"
+                placeholder="Try Sonic Prime, comics, Shadow, racing..."
+              />
+            </label>
+          </div>
+
+          <div class="chip-groups">
+            <div class="chip-group" id="typeFilters" aria-label="Media filters"></div>
+            <div class="chip-group" id="decadeFilters" aria-label="Decade filters"></div>
+          </div>
+        </section>
+
+        <section class="panel spotlight-panel" id="spotlight">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Speed spotlight</p>
+              <h3>Random boost pick</h3>
+            </div>
+          </div>
+          <article class="spotlight-card" id="spotlightCard"></article>
+        </section>
+
+        <section class="panel character-panel" id="characters">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Character Vault</p>
+              <h3>Sonic character bios</h3>
+            </div>
+            <p class="panel-note" id="characterResultsLabel">Loading character bios...</p>
+          </div>
+
+          <div class="character-layout">
+            <div class="character-browser">
+              <label class="search-box" for="characterSearchInput">
+                <span>Search characters</span>
+                <input
+                  id="characterSearchInput"
+                  type="search"
+                  placeholder="Try Sonic, Blaze, Eggman, Chaotix, Babylon..."
+                />
+              </label>
+
+              <div class="chip-group" id="characterGroupFilters" aria-label="Character group filters"></div>
+              <div class="character-list" id="characterList"></div>
+            </div>
+
+            <article class="character-detail" id="characterDetail"></article>
+          </div>
+        </section>
+
+        <section class="panel timeline-panel" id="timeline">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Main event</p>
+              <h3>Sonic franchise timeline</h3>
+            </div>
+            <p class="panel-note" id="resultsLabel">Loading timeline...</p>
+          </div>
+
+          <div class="timeline-list" id="timelineList"></div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <p>
+          Built as a playful franchise explorer for children ages 4 to 8, with
+          the catalog checked against franchise reference pages through 2026.
+        </p>
+        <div class="source-links">
+          <a href="https://en.wikipedia.org/wiki/List_of_Sonic_the_Hedgehog_video_games" target="_blank" rel="noreferrer">Game list source</a>
+          <a href="https://en.wikipedia.org/wiki/Sonic_the_Hedgehog_in_animation" target="_blank" rel="noreferrer">Animation source</a>
+          <a href="https://en.wikipedia.org/wiki/List_of_Sonic_the_Hedgehog_printed_media" target="_blank" rel="noreferrer">Printed media source</a>
+          <a href="https://en.wikipedia.org/wiki/Sonic_the_Hedgehog_(film_series)" target="_blank" rel="noreferrer">Film universe source</a>
+        </div>
+      </footer>
+    </div>
+
+    <template id="entryTemplate">
+      <article class="entry-card">
+        <div class="entry-top">
+          <p class="entry-year"></p>
+          <span class="entry-type"></span>
+        </div>
+        <h4 class="entry-title"></h4>
+        <p class="entry-tagline"></p>
+        <div class="entry-tags"></div>
+      </article>
+    </template>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
