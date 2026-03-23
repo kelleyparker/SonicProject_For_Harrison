@@ -1746,12 +1746,24 @@ const searchInput = document.getElementById("searchInput");
 const spotlightCard = document.getElementById("spotlightCard");
 const spotlightSection = document.getElementById("spotlight");
 const surpriseButton = document.getElementById("surpriseButton");
-const entryTemplate = document.getElementById("entryTemplate");
+const startExploreButton = document.getElementById("startExploreButton");
+const jumpTimelineButton = document.getElementById("jumpTimelineButton");
 const characterSearchInput = document.getElementById("characterSearchInput");
 const characterGroupFilters = document.getElementById("characterGroupFilters");
 const characterList = document.getElementById("characterList");
 const characterDetail = document.getElementById("characterDetail");
 const characterResultsLabel = document.getElementById("characterResultsLabel");
+const tabButtons = Array.from(document.querySelectorAll("[data-tab-target]"));
+const tabPanels = Array.from(document.querySelectorAll("[data-tab-panel]"));
+
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll("\"", "&quot;")
+    .replaceAll("'", "&#39;");
+}
 
 function byYearThenTitle(a, b) {
   return a.year - b.year || a.title.localeCompare(b.title);
@@ -1827,6 +1839,16 @@ function renderStats() {
   document.getElementById("gameCount").textContent = games;
   document.getElementById("screenCount").textContent = screen;
   document.getElementById("otherCount").textContent = other;
+}
+
+function setActiveTab(tabName) {
+  tabButtons.forEach((button) => {
+    button.classList.toggle("active", button.dataset.tabTarget === tabName);
+  });
+
+  tabPanels.forEach((panel) => {
+    panel.classList.toggle("active", panel.dataset.tabPanel === tabName);
+  });
 }
 
 function renderSpotlight(source = sonicEntries, forceDifferent = false) {
@@ -1990,27 +2012,126 @@ function renderTimeline() {
     return;
   }
 
-  const fragment = document.createDocumentFragment();
+  const branches = [
+    {
+      key: "games",
+      className: "timeline-branch timeline-branch-games",
+      title: "Main Game Path",
+      badge: "Games",
+      subtitle: "Core platformers, adventures, and headline game releases",
+      items: visibleEntries.filter((entry) => entry.type === "Game")
+    },
+    {
+      key: "screen",
+      className: "timeline-branch timeline-branch-screen",
+      title: "Screen Path",
+      badge: "Screen",
+      subtitle: "TV, movies, and animated web releases",
+      items: visibleEntries.filter((entry) => entry.type === "Movie" || entry.type === "TV" || entry.type === "Web Short")
+    },
+    {
+      key: "print",
+      className: "timeline-branch timeline-branch-print",
+      title: "Print Path",
+      badge: "Print",
+      subtitle: "Comics, manga, books, and printed story worlds",
+      items: visibleEntries.filter((entry) => entry.type === "Comic" || entry.type === "Book")
+    },
+    {
+      key: "side",
+      className: "timeline-branch timeline-branch-side",
+      title: "Side Project Path",
+      badge: "Extras",
+      subtitle: "Spin-offs, racing games, concerts, podcasts, and crossovers",
+      items: visibleEntries.filter((entry) => entry.type === "Side Project")
+    }
+  ];
 
-  visibleEntries.forEach((entry) => {
-    const node = entryTemplate.content.firstElementChild.cloneNode(true);
-    node.querySelector(".entry-year").textContent = `${entry.year} • ${entry.lane}`;
-    node.querySelector(".entry-type").textContent = entry.type;
-    node.querySelector(".entry-title").textContent = entry.title;
-    node.querySelector(".entry-tagline").textContent = entry.tagline;
+  const firstYear = visibleEntries[0].year;
+  const lastYear = visibleEntries[visibleEntries.length - 1].year;
 
-    const tagsContainer = node.querySelector(".entry-tags");
-    entry.tags.forEach((tag) => {
-      const chip = document.createElement("span");
-      chip.className = "entry-tag";
-      chip.textContent = tag;
-      tagsContainer.appendChild(chip);
-    });
+  const branchMarkup = branches
+    .map((branch) => {
+      if (!branch.items.length) {
+        return `
+          <section class="${branch.className}">
+            <div class="timeline-branch-head">
+              <span class="timeline-branch-badge">${escapeHtml(branch.badge)}</span>
+              <div>
+                <h4 class="timeline-branch-title">${escapeHtml(branch.title)}</h4>
+                <p class="panel-note">${escapeHtml(branch.subtitle)}</p>
+              </div>
+            </div>
+            <div class="timeline-branch-empty">No matching entries are on this branch with the current filters.</div>
+          </section>
+        `;
+      }
 
-    fragment.appendChild(node);
-  });
+      const nodeMarkup = branch.items
+        .map((entry) => {
+          const tags = entry.tags
+            .slice(0, 3)
+            .map((tag) => `<span class="timeline-card-tag">${escapeHtml(tag)}</span>`)
+            .join("");
 
-  timelineList.replaceChildren(fragment);
+          return `
+            <article class="timeline-node">
+              <p class="timeline-node-year">${escapeHtml(entry.year)}</p>
+              <div class="timeline-card">
+                <div class="entry-top">
+                  <p class="entry-year">${escapeHtml(entry.lane)}</p>
+                  <span class="entry-type">${escapeHtml(entry.type)}</span>
+                </div>
+                <h4 class="timeline-card-title">${escapeHtml(entry.title)}</h4>
+                <p class="timeline-card-copy">${escapeHtml(entry.tagline)}</p>
+                <div class="timeline-card-tags">${tags}</div>
+              </div>
+            </article>
+          `;
+        })
+        .join("");
+
+      return `
+        <section class="${branch.className}">
+          <div class="timeline-branch-head">
+            <span class="timeline-branch-badge">${escapeHtml(branch.badge)}</span>
+            <div>
+              <h4 class="timeline-branch-title">${escapeHtml(branch.title)}</h4>
+              <p class="panel-note">${escapeHtml(branch.subtitle)}</p>
+            </div>
+          </div>
+          <div class="timeline-rail">
+            ${nodeMarkup}
+          </div>
+        </section>
+      `;
+    })
+    .join("");
+
+  timelineList.innerHTML = `
+    <section class="timeline-map">
+      <h4 class="timeline-map-title">Sonic Franchise Branch Map</h4>
+      <div class="timeline-grid">
+        <aside class="timeline-origin">
+          <p class="timeline-kicker">Franchise Start</p>
+          <h4>June 23, 1991</h4>
+          <p>Sonic bursts onto the scene and the timeline splits into games, shows, comics, books, and experimental side adventures.</p>
+          <p>Current view spans <strong>${firstYear}</strong> through <strong>${lastYear}</strong>.</p>
+        </aside>
+
+        <div class="timeline-trunk" aria-hidden="true"></div>
+
+        ${branchMarkup}
+
+        <aside class="timeline-future">
+          <p class="timeline-kicker">Modern Sonic</p>
+          <h4>Branches Keep Expanding</h4>
+          <p>The game, screen, print, and side-project paths all continue to feed the same giant franchise universe.</p>
+          <p>Use the filters above to reshape the map and focus on one Sonic era or media lane.</p>
+        </aside>
+      </div>
+    </section>
+  `;
 }
 
 function render() {
@@ -2031,11 +2152,30 @@ characterSearchInput.addEventListener("input", (event) => {
 });
 
 surpriseButton.addEventListener("click", () => {
+  setActiveTab("explore");
   renderSpotlight(getVisibleEntries(), true);
   celebrateSpotlight();
   spotlightSection.scrollIntoView({ behavior: "smooth", block: "start" });
 });
 
+tabButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    setActiveTab(button.dataset.tabTarget);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+});
+
+startExploreButton.addEventListener("click", () => {
+  setActiveTab("explore");
+  document.getElementById("controls").scrollIntoView({ behavior: "smooth", block: "start" });
+});
+
+jumpTimelineButton.addEventListener("click", () => {
+  setActiveTab("explore");
+  document.getElementById("timeline").scrollIntoView({ behavior: "smooth", block: "start" });
+});
+
 renderHeroBadges();
 renderStats();
+setActiveTab("explore");
 render();

@@ -17,7 +17,7 @@
               <h1>Race Through Sonic History</h1>
             </div>
           </div>
-          <a class="hero-link" href="#timeline">Jump to the timeline</a>
+          <button class="hero-link" id="jumpTimelineButton" type="button">Jump to the timeline</button>
         </nav>
 
         <div class="hero-grid">
@@ -32,7 +32,7 @@
             </p>
 
             <div class="hero-actions">
-              <a class="button primary" href="#controls">Start exploring</a>
+              <button class="button primary" id="startExploreButton" type="button">Start exploring</button>
               <button class="button secondary" id="surpriseButton" type="button">
                 Spin Dash Surprise
               </button>
@@ -46,6 +46,7 @@
             <div class="big-ring">
               <div class="ring-core">GO!</div>
             </div>
+            <img class="hero-frontiers-art" src="./sonic_frontiers.png" alt="" />
             <div class="speed-lines speed-lines-left"></div>
             <div class="speed-lines speed-lines-right"></div>
             <div class="pixel-hill hill-one"></div>
@@ -58,6 +59,13 @@
       </header>
 
       <main>
+        <section class="tab-strip" aria-label="Site sections">
+          <button class="tab-button active" type="button" data-tab-target="explore">Explore</button>
+          <button class="tab-button" type="button" data-tab-target="characters">Characters</button>
+          <button class="tab-button" type="button" data-tab-target="walkthrough">Walkthrough</button>
+        </section>
+
+        <section class="tab-panel active" data-tab-panel="explore">
         <section class="stats-strip" aria-label="Franchise totals">
           <article class="stat-card">
             <p class="stat-number" id="totalCount">0</p>
@@ -115,7 +123,22 @@
           </div>
           <article class="spotlight-card" id="spotlightCard"></article>
         </section>
+        
+        <section class="panel timeline-panel" id="timeline">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Main event</p>
+              <h3>Sonic franchise timeline</h3>
+            </div>
+            <p class="panel-note" id="resultsLabel">Loading timeline...</p>
+          </div>
 
+          <p class="timeline-hint">Follow the branching rails to see how Sonic games, shows, books, and side projects spread out across the years.</p>
+          <div class="timeline-list" id="timelineList"></div>
+        </section>
+        </section>
+
+        <section class="tab-panel" data-tab-panel="characters">
         <section class="panel character-panel" id="characters">
           <div class="panel-heading">
             <div>
@@ -143,17 +166,101 @@
             <article class="character-detail" id="characterDetail"></article>
           </div>
         </section>
+        </section>
 
-        <section class="panel timeline-panel" id="timeline">
+        <section class="tab-panel" data-tab-panel="walkthrough">
+        <section class="panel walkthrough-panel" id="walkthrough">
           <div class="panel-heading">
             <div>
-              <p class="eyebrow">Main event</p>
-              <h3>Sonic franchise timeline</h3>
+              <p class="eyebrow">Game Guide</p>
+              <h3>Sonic 1 Genesis walkthrough</h3>
             </div>
-            <p class="panel-note" id="resultsLabel">Loading timeline...</p>
+            <p class="panel-note">A text-only guide for the original Sega Genesis version of <strong>Sonic the Hedgehog</strong>.</p>
           </div>
 
-          <div class="timeline-list" id="timelineList"></div>
+          <div class="walkthrough-grid">
+            <aside class="walkthrough-sidebar">
+              <div class="walkthrough-card">
+                <h4>Quick Start Tips</h4>
+                <ul class="walkthrough-list">
+                  <li>Try to keep at least one ring at all times. One ring is enough to survive a hit.</li>
+                  <li>Use the Spin Dash substitute in Sonic 1 by crouching on slopes and rolling into momentum. There is no real Spin Dash yet.</li>
+                  <li>When a stage feels too fast, slow down. Sonic 1 rewards careful jumps more than blind rushing.</li>
+                  <li>Look for high routes. They usually hold more rings, shields, and safer platforming.</li>
+                  <li>If you reach the end of an act with 50 or more rings, jump into the giant ring for a Chaos Emerald chance.</li>
+                </ul>
+              </div>
+
+              <div class="walkthrough-card">
+                <h4>Boss Basics</h4>
+                <ul class="walkthrough-list">
+                  <li>Most Eggman bosses are easiest when you wait, watch the pattern, then strike after he commits.</li>
+                  <li>Jump from the side of the cockpit when possible instead of from directly underneath.</li>
+                  <li>Never get greedy. One safe hit matters more than taking damage while chasing two.</li>
+                </ul>
+              </div>
+            </aside>
+
+            <div class="walkthrough-main">
+              <article class="walkthrough-card">
+                <h4>Green Hill Zone</h4>
+                <p>Green Hill is the game’s speed showcase, but it is also teaching you how danger hides behind loops and slopes. Watch for Motobugs at ground level, spikes after fast drops, and bridges that collapse if you stop too late.</p>
+                <p>The safest beginner route is the middle path. High paths usually reward you with rings and monitors, but they also demand tighter jumps. If you are learning, focus on staying alive and holding rings rather than forcing the fanciest route.</p>
+                <p><strong>Act 3 boss:</strong> Eggman swings a wrecking ball. Stay near the center, let the ball pass, then jump onto the cockpit when he lowers into range. Back away after each hit so you do not get clipped by the chain.</p>
+              </article>
+
+              <article class="walkthrough-card">
+                <h4>Marble Zone</h4>
+                <p>Marble Zone is where many new players slow down hard. That is normal. This zone is built around timing, not speed. Watch lava cycles, moving blocks, and burners before you commit to a jump.</p>
+                <p>Push green blocks carefully, but do not rush to stand on them if lava is rising. On the longer platforming rooms, jumping too early is usually the mistake. Let moving platforms come all the way into place first.</p>
+                <p><strong>Tip:</strong> invincibility and shields are especially valuable here because the level is full of small mistakes that can snowball if you panic.</p>
+                <p><strong>Act 3 boss:</strong> Eggman drops fireballs while standing by lava. Stay calm, watch the bounce pattern, and land quick hits when the path is open. This fight is more about patience than aggression.</p>
+              </article>
+
+              <article class="walkthrough-card">
+                <h4>Spring Yard Zone</h4>
+                <p>Spring Yard mixes bouncy movement with city-platforming traps. The danger is not usually raw damage, but getting thrown somewhere you did not plan to go. Be ready for springs to launch you toward spikes or enemies if you bounce without looking.</p>
+                <p>Bumpers can keep you safe, but they can also waste time and break your rhythm. When possible, try to control your rebound direction instead of letting the stage toss you around. This is also a strong zone for ring collecting, so it is a good place to set up special stage attempts.</p>
+                <p><strong>Act 3 boss:</strong> Eggman crushes the floor downward. Stay moving and pay attention to where the floor is disappearing. Hit him when he passes low, then instantly reposition so you do not get trapped on a tiny platform.</p>
+              </article>
+
+              <article class="walkthrough-card">
+                <h4>Labyrinth Zone</h4>
+                <p>Labyrinth is the biggest pace break in the whole game. Treat it like a puzzle level. The most important thing is air management. Learn where the bubble vents are and do not wait until the final second if you can help it.</p>
+                <p>Spikes, narrow tunnels, and slow underwater jumping make this zone feel stressful, so plan a few steps ahead. Moving carefully is faster than drowning and restarting a section. If you see a risky shortcut but you do not know what is beyond it, take the safer route first.</p>
+                <p><strong>Act 3 chase:</strong> the final Labyrinth sequence is not a normal boss. You are racing Eggman upward. Ignore the urge to attack him and focus completely on climbing, air, and not getting stuck under closing paths.</p>
+              </article>
+
+              <article class="walkthrough-card">
+                <h4>Star Light Zone</h4>
+                <p>Star Light feels like a reward after Labyrinth. It is lighter, faster, and more generous, but it still punishes careless jumps. Watch seesaws closely. The heavier spiked ball side launches the opposite side upward, so you can use the mechanic to gain height or accidentally launch yourself into danger.</p>
+                <p>This is one of the best zones for preserving momentum if you know the layouts. High routes often pay off, and the platforming is much more readable than Marble or Labyrinth.</p>
+                <p><strong>Act 3 boss:</strong> this is one of the easiest bosses once you understand the seesaws. Use Eggman’s bombs against him by bouncing them upward. You can win quickly without needing to jump on the cockpit much at all.</p>
+              </article>
+
+              <article class="walkthrough-card">
+                <h4>Scrap Brain Zone</h4>
+                <p>Scrap Brain is the game testing everything at once: precision jumps, traps, enemy spacing, and nerves. Move carefully through crushers, spinning gears, and false-safe platforms. This is not the place to force speed unless you know the route well.</p>
+                <p>Act 2 is especially trap-heavy. Expect the game to punish hesitation and overconfidence equally. Memorization helps here more than anywhere before Final Zone.</p>
+                <p><strong>Act 3:</strong> this is basically a return to Labyrinth under harsher pressure. Keep your air plan in mind and do not panic when the route gets mean.</p>
+              </article>
+
+              <article class="walkthrough-card">
+                <h4>Final Zone</h4>
+                <p>Final Zone strips everything down to a boss arena with no rings. Because there are no rings, every hit matters. Stay centered, watch where Eggman’s pistons will land, and avoid standing under him unless you are sure the lane is safe.</p>
+                <p>The rhythm is simple once learned: dodge the crushing pistons, then hit Eggman when he becomes vulnerable. Focus on survival first. Clean dodging wins this fight.</p>
+                <p>After the last hit, enjoy the ending. If you missed Chaos Emeralds, that is normal for a first run. Sonic 1 is very replayable, and special stage practice gets easier once you know the regular levels.</p>
+              </article>
+
+              <article class="walkthrough-card">
+                <h4>Chaos Emerald Advice</h4>
+                <p>In Sonic 1, special stages can feel slippery and awkward at first. Try to enter them with 50 or more rings as often as you can, especially in Green Hill, Spring Yard, and Star Light where ring collecting is more comfortable.</p>
+                <p>Inside the rotating maze, avoid over-correcting. Gentle left-right adjustments are better than frantic taps. Focus on reading where the red goal blocks are before you commit to a direction.</p>
+                <p>If you do not collect every Emerald on your first playthrough, that is completely fine. Many players learn the main game first and then come back for a cleaner Emerald run later.</p>
+              </article>
+            </div>
+          </div>
+        </section>
         </section>
       </main>
 
@@ -170,18 +277,6 @@
         </div>
       </footer>
     </div>
-
-    <template id="entryTemplate">
-      <article class="entry-card">
-        <div class="entry-top">
-          <p class="entry-year"></p>
-          <span class="entry-type"></span>
-        </div>
-        <h4 class="entry-title"></h4>
-        <p class="entry-tagline"></p>
-        <div class="entry-tags"></div>
-      </article>
-    </template>
 
     <script src="./script.js"></script>
   </body>
